@@ -33,12 +33,12 @@ $rnd = rand(0000000000, 9999999999);
 */
 
 
-
 if (empty($errors)) {
   //move_uploaded_file($_FILES['pic']['tmp_name'], $destination);
 
   $bool = uploadFile($_FILES, 'pic', 'uploads/');
-  if ($bool[0]) {
+  //if ($bool[0]) {
+  if($bool){
     echo "<p>File upload successful</p>";
   }
 
