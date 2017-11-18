@@ -1,4 +1,6 @@
 <?php
+include("includes/functions.php");
+
 define("MAX_FILE_SIZE", "2097152");
 $ext = ['image/jpeg', 'image/jpg', 'image/png'];
 if(array_key_exists("save", $_POST)){
@@ -11,6 +13,8 @@ if(empty($_FILES['pic']['name'])){
   $errors [] = "Please select an image";
 }
 
+$picname = $_FILES['pic']['name'];
+
 if ($_FILES['pic']['size']>MAX_FILE_SIZE) {
   $errors [] = "File too large. Maximum: ".MAX_FILE_SIZE;
 }
@@ -20,12 +24,23 @@ $errors [] = " file format not known";
 
   }
 
-  $rnd = rand(0000000000, 9999999999);
+
+/*
+$rnd = rand(0000000000, 9999999999);
   $strip_name = str_replace(' ', '_', $_FILES['pic']['name']);
   $filename = $rnd.$strip_name;
   $destination = 'uploads/'.$filename;
+*/
+
+
+
 if (empty($errors)) {
-  move_uploaded_file($_FILES['pic']['tmp_name'], $destination);
+  //move_uploaded_file($_FILES['pic']['tmp_name'], $destination);
+
+  $bool = uploadFile($_FILES, 'pic', 'uploads/');
+  if ($bool[0]) {
+    echo "<p>File upload successful</p>";
+  }
 
 }else {
   foreach ($errors as $err) {
