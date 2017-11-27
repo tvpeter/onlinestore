@@ -36,26 +36,6 @@ if (array_key_exists('register', $_POST)) {
 
     doAdminRegister($conn, $clean);
 
-/*
-    $hash = password_hash($clean['password'], PASSWORD_BCRYPT);
-    $stmt = $conn ->prepare("INSERT INTO admin (firstName, lastName, email, hash) values(:f, :l, :e, :h)");
-
-    $data = [
-      ":f" => $clean['fname'],
-      ":l" => $clean['lname'],
-      ":e" => $clean['email'],
-      ":h" => $hash
-    ];
-    $stmt ->execute($data);
-  }
-  */
-  /*
-  else {
-  foreach ($errors as $err) {
-    echo "<p> $err </p>";
-  }
-  }
-  */
 }
 }
 ?>

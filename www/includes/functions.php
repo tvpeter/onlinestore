@@ -211,4 +211,35 @@ function updateProduct($dbconn, $input){
 
    $stmt->execute($data);
  }
+
+ function checkUserEmail($cn, $email){
+   $rs = false;
+   $stmt = $cn->prepare("SELECT email FROM users WHERE email=:e");
+   $stmt ->bindParam(":e", $email);
+   $stmt ->execute();
+   $count = $stmt->rowCount();
+   if ($count > 0) {
+     $rs = true;
+   }
+   return $rs;
+ }
+
+function customerRegistration($cn, $input){
+  $rs = false;
+  $hash = password_hash($input['pword'], PASSWORD_BCRYPT);
+  $stmt = $cn->prepare("INSERT INTO users (firstName, lastName, email, username, hash) VALUES (:f, :l, :e, :u, :h)");
+  $data = [
+    ":f" => $input['fname'],
+    ":l" =>$input['lname'],
+    ":e" =>$input['email'],
+    ":u" => $input['uname'],
+    ":h" =>$hash
+  ];
+  if( $stmt ->execute($data)){
+    $rs = true;
+  }
+  return $rs;
+}
+
+
  ?>
