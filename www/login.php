@@ -36,7 +36,6 @@ if ($data[0]) {
 }
 
 
-
 ?>
 <div class="wrapper">
   <h1 id="register-label">Admin Login</h1>

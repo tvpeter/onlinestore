@@ -78,7 +78,7 @@ if ($result) {
          <div><?php  $err = displayErrors($errors, 'cpword'); echo $err;   ?>
          <input type="password" class="text-field confirm-password" placeholder="Confirm Password" name="cpword"></div>
          <input type="submit" class="def-button" value="Register" name="submit">
-         <p class="login-option">Have an account already? Login</p>
+         <p class="login-option"><a href="user_login.php">Have an account already? Login</a></p>
        </form>
      </div>
    </div>

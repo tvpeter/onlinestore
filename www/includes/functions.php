@@ -59,7 +59,6 @@ function adminlogin($dbconn, $input)
   $count = $stmt->rowCount();
   $row = $stmt->fetch(PDO::FETCH_BOTH);
 
-  //print_r($row); exit();
   if ($count != 1 || !password_verify($input['password'], $row['hash'])) {
     $result [] = false;
   }else {
@@ -241,5 +240,21 @@ function customerRegistration($cn, $input){
   return $rs;
 }
 
+function userLogin($dbconn, $input)
+{
+  $result = [];
+   $stmt = $dbconn ->prepare("SELECT * FROM users WHERE email = :email");
+   $stmt ->bindParam(':email', $input['email']);
+   $stmt ->execute();
+   $count = $stmt->rowCount();
+   $row = $stmt->fetch(PDO::FETCH_BOTH);
 
+   if ($count != 1 || !password_verify($input['password'], $row['hash'])) {
+     $result [] = false;
+   }else {
+     $result [] = true;
+     $result [] = $row;
+   }
+   return $result;
+ }
  ?>
