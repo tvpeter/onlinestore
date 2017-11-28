@@ -105,10 +105,9 @@
 }
 .book-display .display-book {
   position: relative;
+  margin-left: 121.5px;
   width: 250px;
   height: 350px;
-  margin-left: 121.5px;
-  background: url('../img/big.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -226,37 +225,36 @@
   text-align: center;
 }
 .main-book-list .book:first-of-type .book-cover {
-  background: url('../img/1.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 .main-book-list .book:nth-of-type(2) .book-cover {
-  background: url('../img/2.jpg');
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 .main-book-list .book:nth-of-type(3) .book-cover {
-  background: url('../img/3.jpg');
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 .main-book-list .book:nth-of-type(4) .book-cover {
-  background: url('../img/4.jpg');
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 .main-book-list .book:nth-of-type(5) .book-cover {
-  background: url('../img/3.jpg');
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 .main-book-list .book:nth-of-type(6) .book-cover {
-  background: url('../img/4.jpg');
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

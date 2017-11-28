@@ -257,4 +257,41 @@ function userLogin($dbconn, $input)
    }
    return $result;
  }
+
+ function getCategories($dbcon)
+ {
+   $result = "";
+   $stmt = $dbcon->prepare("SELECT category_name FROM category ORDER BY category_name ASC");
+   $stmt ->execute();
+   while ($row = $stmt->fetch(PDO::FETCH_BOTH)) {
+     $result .= "<a href=#><li class=category>".$row['category_name']."</li></a>";
+   }
+   return $result;
+ }
+
+function displayTopSelling($db){
+  $fg = "Top Selling";
+  $st = $db->prepare("SELECT * FROM books
+    WHERE flag=:f
+    ORDER BY Rand() LIMIT 1");
+  $st ->bindParam(':f', $fg);
+  $st ->execute();
+  $row = $st->fetch(PDO::FETCH_ASSOC);
+return $row;
+}
+
+function displayTrending($db){
+  $rs ="";
+  $t = "Trending";
+  $st = $db->prepare("SELECT * FROM books WHERE flag=:t ORDER BY Rand() LIMIT 8");
+  $st->bindParam(':t', $t);
+  $st ->execute();
+  while($row = $st->fetch(PDO::FETCH_ASSOC)){
+    $img = $row['img_path'];
+$rs .= "<li class='book' ><a href=''><div class='book-cover' style=\"background:url('$img'); background-size: cover;
+background-position: center; background-repeat: no-repeat; \"></div></a><div class='book-price'><p>$".$row['price']."</p></div></li>";
+  }
+
+  return $rs;
+}
  ?>
