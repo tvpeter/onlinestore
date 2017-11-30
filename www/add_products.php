@@ -20,7 +20,6 @@ if (array_key_exists('add', $_POST)) {
     $errors ['price'] = "input the price";
   }
 
-
     if (empty($_POST['year'])) {
       $errors ['year'] = "enter publication year";
     }

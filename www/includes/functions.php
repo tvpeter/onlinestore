@@ -261,10 +261,10 @@ function userLogin($dbconn, $input)
  function getCategories($dbcon)
  {
    $result = "";
-   $stmt = $dbcon->prepare("SELECT category_name FROM category ORDER BY category_name ASC");
+   $stmt = $dbcon->prepare("SELECT * FROM category ORDER BY category_name ASC");
    $stmt ->execute();
    while ($row = $stmt->fetch(PDO::FETCH_BOTH)) {
-     $result .= "<a href=#><li class=category>".$row['category_name']."</li></a>";
+     $result .= "<a href=catalogue.php?nm=".$row['category_id']."><li class=category>".$row['category_name']."</li></a>";
    }
    return $result;
  }
@@ -294,4 +294,47 @@ background-position: center; background-repeat: no-repeat; \"></div></a><div cla
 
   return $rs;
 }
+
+function recentlyViewed($db){
+  $rs ="";
+  $t = "Receently Viewed";
+  $st = $db->prepare("SELECT * FROM books WHERE flag=:t ORDER BY Rand() LIMIT 4");
+  $st->bindParam(':t', $t);
+  $st ->execute();
+  while($row = $st->fetch(PDO::FETCH_ASSOC)){
+    $img = $row['img_path'];
+$rs .= "<li class='book' ><a href=''><div class='book-cover' style=\"background:url('$img'); background-size: cover;
+background-position: center; background-repeat: no-repeat; \"></div></a><div class='book-price'><p>$".$row['price']."</p></div></li>";
+  }
+
+  return $rs;
+}
+
+function displayByCategory($db, $cat=null){
+  $rs = "";
+
+  if ($cat != null) {
+    $st = $db->prepare("SELECT * FROM books WHERE cat_id=:t ORDER BY Rand() LIMIT 8");
+    $st->bindParam(':t', $cat);
+    $st ->execute();
+    while($row = $st->fetch(PDO::FETCH_ASSOC)){
+      $img = $row['img_path'];
+  $rs .= "<li class='book' ><a href=''><div class='book-cover' style=\"background:url('$img'); background-size: cover;
+  background-position: center; background-repeat: no-repeat; \"></div></a><div class='book-price'><p>$".$row['price']."</p></div></li>";
+}
+
+}else {
+    $st = $db->prepare("SELECT * FROM books ORDER BY Rand() LIMIT 8");
+    $st ->execute();
+    while($rw = $st->fetch(PDO::FETCH_ASSOC)){
+      $img = $rw['img_path'];
+  $rs .= "<li class='book' ><a href=''><div class='book-cover' style=\"background:url('$img'); background-size: cover;
+  background-position: center; background-repeat: no-repeat; \"></div></a>
+  <div class='book-price'><p>$".$rw['price']."</p></div></li>";
+  }
+}
+
+  return $rs;
+}
+
  ?>
