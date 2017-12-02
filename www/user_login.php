@@ -1,11 +1,8 @@
-<?php
+<?php 
 $page_title = "Customer Login";
 include("includes/uheader.php");
-include("includes/db.php");
-include("includes/functions.php");
   $errors = array();
 if (array_key_exists('submit', $_POST)) {
-
 
   if (empty($_POST['email'])) {
     $errors ['email'] = "Supply your email";
@@ -19,7 +16,10 @@ if (empty($errors)) {
   $wash = array_map('trim', $_POST);
 $result = userLogin($conn, $wash);
 if ($result[0]) {
-  redirect("registration.php", "");
+  $userDetails = $result[1];
+  $_SESSION['uid'] = $userDetails[0];
+  $_SESSION['name'] = $userDetails[1]." ".$userDetails[2];
+  redirect("index.php", " ");
 }else {
   $errors ['email'] = "Wrong username/password";
 }

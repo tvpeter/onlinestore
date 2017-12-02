@@ -1,8 +1,7 @@
 <?php
 $page_title = "Catalogue";
 include("includes/uheader.php");
-include("includes/db.php");
-include("includes/functions.php");
+
 
 if (isset($_GET['nm'])) {
   $catId = $_GET['nm'];

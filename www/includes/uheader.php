@@ -1,3 +1,9 @@
+<?php session_start();
+include("includes/db.php");
+include("includes/functions.php");
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,12 +26,21 @@
 <body id="bookpreview">
   <div class="top-bar">
     <div class="top-nav">
-      <a href="index.html"><h3 class="brand"><span>C</span>astle<span>B</span>ooks</h3></a>
+      <a href="index.php"><h3 class="brand"><span>C</span>astle<span>B</span>ooks</h3></a>
       <ul class="top-nav-list">
         <li class="top-nav-listItem Home"><a href="index.php">Home</a></li>
         <li class="top-nav-listItem catalogue"><a href="catalogue.php">Catalogue</a></li>
+<?php if (!isset($_SESSION['uid']) || !isset($_SESSION['name'])){ ?>
+
         <li class="top-nav-listItem login"><a href="user_login.php">Login</a></li>
         <li class="top-nav-listItem register"><a href="registration.php">Register</a></li>
+
+      <?php } else{
+
+        echo "<li class=top-nav-listItem>
+        <img src='uploads/user.png'>".$_SESSION['name']."</li>".
+        "<li class=top-nav-listItem><a href=user_logout.php>Logout</a></li>";
+      } ?>
         <li class="top-nav-listItem cart">
           <div class="cart-item-indicator">
             <p>12</p>

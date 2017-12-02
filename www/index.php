@@ -1,10 +1,10 @@
-  <?php
+  <?php 
   $page_title = "Castle Books";
   include("includes/uheader.php");
-  include("includes/db.php");
-  include("includes/functions.php");
+
   $rs = displayTopSelling($conn);
   $img = $rs['img_path'];
+
   ?>
 
   <div class="main">
@@ -20,7 +20,7 @@
    <h3 class="book-price">$<?php echo $rs['price']; ?></h3>
    <form>
      <label for="book-amout">Amount</label>
-     <input type="number" class="book-amount text-field">
+     <input type="number" class="book-amount text-field" min="1" name="">
      <input class="def-button add-to-cart" type="submit" name="" value="Add to cart">
    </form>
   </div>

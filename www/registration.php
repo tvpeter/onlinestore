@@ -1,8 +1,7 @@
 <?php
 $page_title = "Customer Registration";
 include("includes/uheader.php");
-include("includes/db.php");
-include("includes/functions.php");
+
   $errors = array();
 if (array_key_exists('submit', $_POST)) {
 

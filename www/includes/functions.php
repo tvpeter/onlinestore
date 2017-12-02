@@ -249,7 +249,7 @@ function userLogin($dbconn, $input)
    $count = $stmt->rowCount();
    $row = $stmt->fetch(PDO::FETCH_BOTH);
 
-   if ($count != 1 || !password_verify($input['password'], $row['hash'])) {
+   if ($count != 1 || !password_verify($input['pword'], $row['hash'])) {
      $result [] = false;
    }else {
      $result [] = true;
@@ -257,6 +257,7 @@ function userLogin($dbconn, $input)
    }
    return $result;
  }
+
 
  function getCategories($dbcon)
  {
@@ -287,8 +288,8 @@ function displayTrending($db){
   $st->bindParam(':t', $t);
   $st ->execute();
   while($row = $st->fetch(PDO::FETCH_ASSOC)){
-    $img = $row['img_path'];
-$rs .= "<li class='book' ><a href=''><div class='book-cover' style=\"background:url('$img'); background-size: cover;
+    $img = $row['img_path']; $id = $row['books_id'];
+$rs .= "<li class='book' ><a href='preview.php?id=$id'><div class='book-cover' style=\"background:url('$img'); background-size: cover;
 background-position: center; background-repeat: no-repeat; \"></div></a><div class='book-price'><p>$".$row['price']."</p></div></li>";
   }
 
@@ -302,8 +303,8 @@ function recentlyViewed($db){
   $st->bindParam(':t', $t);
   $st ->execute();
   while($row = $st->fetch(PDO::FETCH_ASSOC)){
-    $img = $row['img_path'];
-$rs .= "<li class='book' ><a href=''><div class='book-cover' style=\"background:url('$img'); background-size: cover;
+    $img = $row['img_path']; $id = $row['books_id'];
+$rs .= "<li class='book' ><a href='preview.php?id=$id'><div class='book-cover' style=\"background:url('$img'); background-size: cover;
 background-position: center; background-repeat: no-repeat; \"></div></a><div class='book-price'><p>$".$row['price']."</p></div></li>";
   }
 
@@ -318,8 +319,8 @@ function displayByCategory($db, $cat=null){
     $st->bindParam(':t', $cat);
     $st ->execute();
     while($row = $st->fetch(PDO::FETCH_ASSOC)){
-      $img = $row['img_path'];
-  $rs .= "<li class='book' ><a href=''><div class='book-cover' style=\"background:url('$img'); background-size: cover;
+      $img = $row['img_path']; $id = $row['books_id'];
+  $rs .= "<li class='book' ><a href='preview.php?id=$id'><div class='book-cover' style=\"background:url('$img'); background-size: cover;
   background-position: center; background-repeat: no-repeat; \"></div></a><div class='book-price'><p>$".$row['price']."</p></div></li>";
 }
 
@@ -327,8 +328,8 @@ function displayByCategory($db, $cat=null){
     $st = $db->prepare("SELECT * FROM books ORDER BY Rand() LIMIT 8");
     $st ->execute();
     while($rw = $st->fetch(PDO::FETCH_ASSOC)){
-      $img = $rw['img_path'];
-  $rs .= "<li class='book' ><a href=''><div class='book-cover' style=\"background:url('$img'); background-size: cover;
+      $img = $rw['img_path']; $id = $rw['books_id'];
+  $rs .= "<li class='book' ><a href='preview.php?id=$id'><div class='book-cover' style=\"background:url('$img'); background-size: cover;
   background-position: center; background-repeat: no-repeat; \"></div></a>
   <div class='book-price'><p>$".$rw['price']."</p></div></li>";
   }
@@ -336,5 +337,49 @@ function displayByCategory($db, $cat=null){
 
   return $rs;
 }
+
+
+function previewBook($db, $id)
+{
+$st = $db->prepare("SELECT * FROM books WHERE books_id=:id");
+  $st->bindParam(':id', $id);
+  $st ->execute();
+  $row = $st->fetch(PDO::FETCH_ASSOC);
+return $row;
+
+}
+
+//function addToCart($db, $bkid, $qty, ){}
+
+  function addReview($db, $uid, $bkid, $rv, $dt){
+    $result = false;
+    $st = $db->prepare("INSERT INTO reviews (user_id, book_id, review, review_date) VALUES (:u, :bid, :rv, :dt)");
+    $data = [
+      ":u" => $uid,
+      ":bid" => $bkid,
+      ":rv" => $rv,
+      ":dt" => $dt
+    ];
+    if ($st->execute($data)) {
+      $result = true;
+    }
+
+    return $result;
+  }
+
+  function showComments($db, $bid){
+    $res = "";
+    $stmt = $db->prepare("SELECT r.user_id, r.book_id, r.review, u.firstName, u.lastName FROM reviews r, users u WHERE r.user_id = u.user_id AND book_id =:b ORDER BY review_date DESC");
+    $stmt->bindParam(':b', $bid);
+    $stmt->execute();
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+      $fname = $row['firstName']; $lname = $row['lastName']; $rv =$row['review'];
+      $abbr =substr(ucfirst($row['firstName']), 0, 1).substr(ucfirst($row['lastName']), 0, 1);
+
+      $res .="
+      <li class='review'><div class='avatar-def user-image'><h4 class='user-init'>$abbr</h4></div><div class='info'><h4 class='username'>$fname $lname</h4><p class='comment'>$rv</p></div></li>";
+    }
+    return $res;
+  }
 
  ?>
