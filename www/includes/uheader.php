@@ -1,9 +1,11 @@
 <?php session_start();
 include("includes/db.php");
 include("includes/functions.php");
+if (isset($_SESSION['uid'])) {   $cid = $_SESSION['uid'];
+}else {  $cid = rand(000000, 999999);  }
+  $ps = "Unpaid";
+   $qty = selectFromCart($conn, $cid, $ps);
 ?>
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,8 +13,7 @@ include("includes/functions.php");
     <link rel="stylesheet" href="styles/style.css">
       <title><?php echo $page_title; ?></title>
       <style media="screen">
-      .err {
-          font-size: 13px;
+      .err {  font-size: 13px;
           color:red !important;
       }
       .scc {
@@ -43,9 +44,10 @@ include("includes/functions.php");
       } ?>
         <li class="top-nav-listItem cart">
           <div class="cart-item-indicator">
-            <p>12</p>
+
+            <p><?php echo $qty; ?></p>
           </div>
-          <a href="cart.html">Cart</a>
+          <a href="cart.php">Cart</a>
         </li>
       </ul>
       <form class="search-brainfood">

@@ -6,12 +6,18 @@ if (isset($_GET['id'])) {
   $bookId = $_GET['id'];
   $rs = previewBook($conn, $bookId);
   $img = $rs['img_path'];
-}else{  redirect("index.php", "");
-}
+}else{  redirect("index.php", ""); }
+
 ?>
 
 <div class="main">
+
     <?php
+
+    if (isset($_GET['msg'])) {
+      $msg = $_GET['msg'];
+      echo "<p class='global-error'>$msg</p>";
+    }
 
     if (array_key_exists('submit', $_POST)) {
         $errors = [];
@@ -21,11 +27,16 @@ if (isset($_GET['id'])) {
     }
 
     if (empty($errors)) {
-      $clean = array_map('trim', $_POST);
+      $amount = trim($_POST['amount']);
+      $ddate = date("Y-m-d H:i:s");
 
+      $insert = addCart($conn, $cid, $bookId, $amount, $ps, $ddate);
+      if ($insert) {
+        redirect("preview.php?id=$bookId&msg=", "Successfully added to cart. Click cart to checkout" );
+      }
+        }
     }
 
-    }
 
         ?>
 
@@ -38,20 +49,19 @@ if (isset($_GET['id'])) {
       <h2 class="book-title"><?php echo $rs['title']; ?></h2>
        <h3 class="book-author">by <?php echo $rs['author']; ?></h3>
        <h3 class="book-price">$<?php echo $rs['price']; ?></h3>
-       <form>
+       <form method="POST">
          <label for="book-amout">QTY</label>
          <input type="number" class="book-amount text-field" name="amount" min="1">
          <input class="def-button add-to-cart" type="submit" name="submit" value="Add to cart">
        </form>
       </div>
-
     </div>
 
     <div class="book-reviews">
       <h3 class="header">Reviews</h3>
-
       <ul class="review-list">
         <?php
+
       echo $rt = showComments($conn, $bookId);
          ?>
       </ul>

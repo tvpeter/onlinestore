@@ -96,6 +96,7 @@ function viewCategory($dbconn){
   return $result;
 }
 
+
 function curNav($page){
   $curPage = basename($_SERVER['SCRIPT_NAME']);
   if ($curPage == $page) {
@@ -177,6 +178,16 @@ function viewProducts($dbconn){
   return $result;
 }
 
+function cartContent($db, $cusid, $pst){
+  $stmt = $db->prepare("SELECT c.cart_id, c.customer_id, c.product_id, c.qty, c.payment_status, b.img_path, b.price FROM cart c, books b WHERE c.product_id= b.books_id AND c.customer_id=:cid AND c.payment_status=:ps");
+  $data =[
+    ":cid" => $cusid,
+    ":ps" => $pst
+  ];
+  $stmt->execute($data);
+  return $stmt;
+}
+
 function getProductById($dbconn, $id){
   $result = '';
   $stmt = $dbconn->prepare("SELECT * FROM books WHERE books_id=:id");
@@ -197,6 +208,18 @@ function updateProduct($dbconn, $input){
     ":bid" =>$input['id']
   ];
   $stmt ->execute($data);
+}
+
+function updateCart($db, $q, $cd){
+  $rs = false;
+  $stmt = $db->prepare("UPDATE cart SET qty=:qt WHERE cart_id=:c");
+  $data =[    ":qt" =>$q,
+    ":c" =>$cd
+  ];
+  if($stmt ->execute($data)){
+    $rs = true;
+  }
+  return $rs;
 }
 
  function updateImage($dbconn, $id, $location) {
@@ -349,7 +372,7 @@ return $row;
 
 }
 
-//function addToCart($db, $bkid, $qty, ){}
+
 
   function addReview($db, $uid, $bkid, $rv, $dt){
     $result = false;
@@ -381,5 +404,31 @@ return $row;
     }
     return $res;
   }
+
+function addCart($db, $cs, $prd, $qty, $pst, $dt){
+  $rs = false;
+  $stmt=$db->prepare("INSERT INTO cart (customer_id, product_id, qty, payment_status, t_date) VALUES (:c, :p, :q, :pt, :d)");
+  $data = [
+    ":c" => $cs,
+    ":p" =>$prd,
+    ":q" =>$qty,
+    ":pt" =>$pst,
+    ":d" =>$dt
+  ];
+  if ( $stmt->execute($data) ) {
+    $rs = true;
+  }
+return $rs;
+
+}
+
+function selectFromCart($dbconn, $user, $ps){
+  $stmt = $dbconn->prepare("SELECT count(qty) FROM cart WHERE customer_id=:id AND payment_status=:un");
+  $stmt->bindParam(':id', $user);
+  $stmt->bindParam(':un', $ps);
+  $stmt->execute();
+$row = $stmt->fetchColumn();
+  return $row;
+}
 
  ?>
