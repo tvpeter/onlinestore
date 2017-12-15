@@ -23,8 +23,7 @@ if (isset($_GET['nm'])) {
 <div class="main">
   <div class="main-book-list horizontal-book-list">
     <ul class="book-list">
-      <?php
-      echo $show; ?>
+      <?php  echo $show; ?>
     </ul>
   </ul>
   <div class="actions">

@@ -129,6 +129,18 @@ function deleteCategory($dbconn, $id){
   $stmt ->execute();
 }
 
+
+function deleteFromCart($dbconn, $id){
+  $result = false;
+  $stmt = $dbconn->prepare("DELETE FROM cart WHERE cart_id =:id");
+  $stmt ->bindParam(':id', $id);
+  if (  $stmt ->execute()) {
+    $result = false;
+  }
+  return $result;
+
+}
+
 function checkLogin(){
   if (!isset($_SESSION['aid'])) {
     redirect('login.php', "");

@@ -1,4 +1,4 @@
-<?php 
+<?php
 $page_title = "Customer Login";
 include("includes/uheader.php");
   $errors = array();
@@ -30,8 +30,12 @@ if ($result[0]) {
  ?>
  <div class="main">
  <div class="login-form">
+
    <form class="def-modal-form" action="user_login.php" method ="POST">
      <div class="cancel-icon close-form"></div>
+     <?php  if (isset($_GET['msg'])) {
+       echo "<p class='global-error'>".$_GET['msg']."</p>";
+     }?>
      <label for="login-form" class="header"><h3>Login</h3></label>
      <input type="text" class="text-field email" placeholder="Email or Username" name="email">
      <?php if (isset($errors['email'])) { echo '<p class=form-error>'.$errors['email'].'</p>';  } ?>

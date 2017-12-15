@@ -2,7 +2,7 @@
 include("includes/db.php");
 include("includes/functions.php");
 if (isset($_SESSION['uid'])) {   $cid = $_SESSION['uid'];
-}else {  $cid = rand(000000, 999999);  }
+} //else {  $cid = rand(000000, 999999);  }
   $ps = "Unpaid";
    $qty = selectFromCart($conn, $cid, $ps);
 ?>
@@ -44,10 +44,9 @@ if (isset($_SESSION['uid'])) {   $cid = $_SESSION['uid'];
       } ?>
         <li class="top-nav-listItem cart">
           <div class="cart-item-indicator">
-
             <p><?php echo $qty; ?></p>
           </div>
-          <a href="cart.php">Cart</a>
+      <a href="cart.php" name="cart">Cart</a>
         </li>
       </ul>
       <form class="search-brainfood">

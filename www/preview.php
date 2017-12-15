@@ -21,6 +21,9 @@ if (isset($_GET['id'])) {
 
     if (array_key_exists('submit', $_POST)) {
         $errors = [];
+        if (!isset($_SESSION['uid'])){
+          redirect("user_login.php?msg=", "Login to add products to cart");
+        }
     if (empty($_POST['amount'])) {
       $errors ['amount'] = "Qty cannot be empty";
       echo "<p class='global-error'>You have not chosen any amount!</p>";
@@ -42,7 +45,7 @@ if (isset($_GET['id'])) {
 
     <div class="book-display">
       <div class="display-book" style="background: url('<?php echo $img; ?>');
-        background-size: cover; background-positive: center; background-repeat: no-repeat; ">
+        background-size: cover; background-positive: center; background-repeat: no-repeat;">
             </div>
 
       <div class="info">

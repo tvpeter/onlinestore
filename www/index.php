@@ -5,6 +5,7 @@
   $rs = displayTopSelling($conn);
   $img = $rs['img_path'];
  $bookId = $rs['books_id'];
+
   ?>
 
   <div class="main">
@@ -25,6 +26,10 @@
 
    if (array_key_exists('submit', $_POST)) {
        $errors = [];
+if (!isset($_SESSION['uid'])){
+  redirect("user_login.php?msg=", "Login to add products to cart");
+}
+
    if (empty($_POST['amount'])) {
      $errors ['amount'] = "Qty cannot be empty";
      echo "<p style='color:red'>You have not chosen any amount!</p>";

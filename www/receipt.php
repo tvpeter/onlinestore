@@ -8,10 +8,12 @@ include("includes/uheader.php");
   if (!isset($_SESSION['uid'])) {
     redirect("user_login.php?msg=", "Login to check the cart");
   }
-  if (isset($_GET['msg'])) {
-      $msg = $_GET['msg'];
-      echo "<p class='global-error'>$msg</p>";
-    } ?>
+  if (array_key_exists('chtk', $_POST)) {
+    if (empty($_POST['phone'])) { redirect("checkout.php")
+    }
+  }
+
+  ?>
    <table class="cart-table">
      <thead>
        <tr>
@@ -39,12 +41,6 @@ include("includes/uheader.php");
          <td><p class="quantity"><?php echo $qty; ?></p></td>
          <td><p class="total">$<?php echo $prd; ?></p></td>
          <td>
-           <?php if (isset($_POST['submit']) && !empty($_POST['qty'])) {
-                $update = updateCart($conn, $_POST['qty'], $_POST['id']);
-                if ($update) {
-                  redirect("cart.php?msg=", "Product quantity updated Successfully");
-                }
-           } ?>
            <form class="update" method="post">
              <input type="hidden" name="id" value="<?php echo $cart_id; ?>">
              <input type="number" class="text-field qty" min="1" name="qty" value="<?php echo $qty; ?>">
