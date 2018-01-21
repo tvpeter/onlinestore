@@ -39,7 +39,8 @@ include("includes/uheader.php");
          <td><p class="quantity"><?php echo $qty; ?></p></td>
          <td><p class="total">$<?php echo $prd; ?></p></td>
          <td>
-           <?php if (isset($_POST['submit']) && !empty($_POST['qty'])) {
+           <?php  $_SESSION['sum'] = $sum;  
+           if (isset($_POST['submit']) && !empty($_POST['qty'])) {
                 $update = updateCart($conn, $_POST['qty'], $_POST['id']);
                 if ($update) {
                   redirect("cart.php?msg=", "Product quantity updated Successfully");
@@ -67,7 +68,7 @@ include("includes/uheader.php");
        <a href="#"><p>2</p></a>
        <a href="#"><p>3</p></a>
      </div>
-     <a href="checkout.php?sum=<?php echo $sum ?>id=<?php echo $cid; ?>"><button class="def-button checkout">Checkout</button></a>
+     <a href="checkout.php?sum=<?php echo $sum ?>"><button class="def-button checkout">Checkout</button></a>
    </div>
 
  </div>

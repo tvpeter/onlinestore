@@ -443,4 +443,57 @@ $row = $stmt->fetchColumn();
   return $row;
 }
 
+function checkOut($db, $id, $cl, $dt, $pst, $ptc){
+  $status = false;
+    $pass = $db->prepare("UPDATE cart SET phone=:p, address=:ad, ddate=:d, pcode=:pc, payment_status=:pt WHERE
+    customer_id=:id AND payment_status=:ps ");
+    $data = [
+      ":p"=> $cl['num'],
+      ":ad"=> $cl['addy'],
+      ":d" =>$dt,
+      ":pc" =>$cl['code'],
+      ":pt" =>$ptc,
+      ":id" =>$id,
+      ":ps" => $pst
+    ];
+    if ($pass->execute($data)) {
+      $status = true;
+    }
+    return $status;
+}
+
+function getPurchased($db, $id, $pst, $dd){
+    $sn = 0;
+  $stmt = $db->prepare("SELECT c.product_id, c.qty, b.title, b.author,
+   b.price FROM cart c, books b WHERE c.product_id= b.books_id
+   AND c.customer_id=:cid AND c.payment_status=:ps AND ddate=:d ");
+  $data =[
+    ":cid" => $id,
+    ":ps" => $pst,
+    ":d" =>$dd
+  ];
+  $stmt->execute($data);
+while($row =$stmt->fetch(PDO::FETCH_BOTH)){
+  $sn++;
+  extract($row); $total = $price*$qty;
+  echo "<tr><td>$sn</td><td>$title</td><td>$price</td><td>$qty</td><td> $total </td></tr>";
+}
+}
+
+
+function getCustomerInfo($db, $id, $dd){
+  $stmt = $db->prepare("SELECT u.firstName, u.lastName, u.email,
+  c.phone, c.address, c.pcode
+  FROM users u, cart c WHERE u.user_id = c.customer_id AND c.customer_id = :d AND c.ddate=:dd");
+  $stmt->bindParam(':d', $id);
+  $stmt->bindParam(':dd', $dd);
+  $stmt->execute();
+  $rs = $stmt->fetch(PDO::FETCH_BOTH);
+  return $rs;
+}
+
+
+
+
+
  ?>
